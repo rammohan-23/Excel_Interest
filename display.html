@@ -167,7 +167,7 @@
             const loadingOverlay = document.getElementById("loadingOverlay");
             loadingOverlay.style.display = "flex";
             try {
-                const response = await fetch("https://script.google.com/macros/s/AKfycbx4uSgoqipWmpFIm709glCahkA2Hjlsov303Q-EehPIaDxzrp9hYrgkGLD76wGh6i0/exec?nocache=" + new Date().getTime());
+                const response = await fetch("https://script.google.com/macros/s/AKfycbxdHZE8aLu0KtXGjr7a44LKgy-as_nFq6rsGPAlqydVK48YLMcfj0mcUivGD-uOThg/exec?nocache=" + new Date().getTime());
                 const data = await response.json();
                 document.getElementById("headerText").innerText = "Calculated amounts are to: " + data.header;
                 const tableBody = document.querySelector("#dataTable tbody");
