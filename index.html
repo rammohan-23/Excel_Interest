@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Fields</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .navbar {
+            width: 100%;
+            background: linear-gradient(90deg, #007BFF, #0056b3);
+            padding: 10px 20px; /* Reduced padding to make navbar smaller */
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding-right: 40px; /* Added gap to the right */
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px 16px; /* Adjusted padding to fit smaller navbar */
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s, transform 0.2s;
+            margin-right: 20px;
+        }
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+        form {
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin-top: 60px; /* Adjusted margin to fit smaller navbar */
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid white;
+            border-top: 5px solid #007BFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="display.html">View Details</a>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <form id="dataForm">
+        <label for="name">Enter Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+
+        <label for="date">Date of Lending:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        
+        <label for="amount">Enter amount:</label>
+        <input type="number" id="amount" name="amount" step="1" required>
+        <br>
+        
+        <label for="interest">Enter rate of interest:</label>
+        <input type="number" id="interest" name="interest" step="any" required>
+        <br>
+        
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("dataForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let submitBtn = document.getElementById("submitBtn");
+            let loadingOverlay = document.getElementById("loadingOverlay");
+
+            submitBtn.disabled = true;
+            loadingOverlay.style.display = "flex";
+
+            const formData = {
+                name: document.getElementById("name").value,
+                date: document.getElementById("date").value,
+                amount: document.getElementById("amount").value,
+                interest: document.getElementById("interest").value
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbx4uSgoqipWmpFIm709glCahkA2Hjlsov303Q-EehPIaDxzrp9hYrgkGLD76wGh6i0/exec", {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            }).then(() => {
+                alert("Data submitted successfully!");
+                document.getElementById("dataForm").reset();
+            }).catch(error => {
+                alert("Submission failed. Please try again.");
+                console.error("Error:", error);
+            }).finally(() => {
+                submitBtn.disabled = false;
+                loadingOverlay.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
